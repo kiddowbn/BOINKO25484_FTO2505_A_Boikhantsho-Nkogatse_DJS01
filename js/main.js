@@ -1,7 +1,20 @@
 /**
  * Main application logic.
  */
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+  // Wait for the data to be loaded
+  if (!window.podcastData) {
+    await new Promise(resolve => {
+      // Check every 100ms if data is loaded
+      const interval = setInterval(() => {
+        if (window.podcastData) {
+          clearInterval(interval);
+          resolve();
+        }
+      }, 100);
+    });
+  }
+
   const podcastManager = new PodcastManager();
   const modal = new Modal();
 
@@ -19,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const card = document.createElement('div');
       card.className = 'podcast-card';
       card.innerHTML = `
-        <img src="${podcast.coverImage}" alt="${podcast.title}">
+        <img src="${podcast.image}" alt="${podcast.title}">
         <div class="podcast-info">
           <h3 class="podcast-title">${podcast.title}</h3>
           <div class="seasons">
@@ -27,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ${podcast.seasons} seasons
           </div>
           <div class="genre-tags">
-            ${podcast.genres.map(g => `<span class="genre-tag">${g}</span>`).join('')}
+            ${podcast.getGenres().map(g => `<span class="genre-tag">${g.title}</span>`).join('')}
           </div>
           <div class="updated-date">${podcast.getFormattedLastUpdated()}</div>
         </div>

@@ -35,11 +35,11 @@ class Modal {
    */
   show(podcast) {
     this.modalTitle.textContent = podcast.title;
-    this.modalImage.src = podcast.coverImage;
+    this.modalImage.src = podcast.image;
     this.modalDescription.textContent = podcast.description;
     this.modalLastUpdated.textContent = `Last updated: ${podcast.getFormattedDate()}`;
-    this.renderGenres(podcast.genres);
-    this.renderSeasons(podcast.seasonsData);
+    this.renderGenres(podcast.getGenres());
+    this.renderSeasons(podcast.seasonDetails);
     this.modal.style.display = 'flex';
   }
 
@@ -52,14 +52,14 @@ class Modal {
 
   /**
    * Render genre tags in the modal.
-   * @param {Array<string>} genres - List of genre strings
+   * @param {Array<Object>} genres - List of genre objects
    */
   renderGenres(genres) {
     this.modalGenres.innerHTML = '';
     genres.forEach(genre => {
       const tag = document.createElement('span');
       tag.className = 'genre-tag';
-      tag.textContent = genre;
+      tag.textContent = genre.title;
       this.modalGenres.appendChild(tag);
     });
   }
@@ -75,10 +75,12 @@ class Modal {
       item.className = 'season-item';
       item.innerHTML = `
         <div class="season-title">${season.title}</div>
-        <div class="season-desc">${season.description}</div>
         <div class="episode-count">${season.episodes} episodes</div>
       `;
       this.seasonsList.appendChild(item);
     });
   }
 }
+
+// Export the class for module usage
+export default Modal;

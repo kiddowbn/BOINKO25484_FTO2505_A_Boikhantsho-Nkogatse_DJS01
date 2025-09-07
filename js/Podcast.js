@@ -1,23 +1,38 @@
 /**
  * Represents a single podcast show.
  * @class Podcast
- * @param {string} title - Title of the podcast
- * @param {string} coverImage - URL to the cover image
- * @param {number} seasons - Number of seasons
- * @param {Array<string>} genres - List of genres
- * @param {Date} lastUpdated - Last updated timestamp
- * @param {string} description - Description of the podcast
- * @param {Array<Object>} seasonsData - Detailed season data
+ * @param {Object} data - Raw podcast data from API
  */
 class Podcast {
-  constructor(title, coverImage, seasons, genres, lastUpdated, description, seasonsData) {
-    this.title = title;
-    this.coverImage = coverImage;
-    this.seasons = seasons;
-    this.genres = genres;
-    this.lastUpdated = lastUpdated;
-    this.description = description;
-    this.seasonsData = seasonsData;
+  constructor(data) {
+    this.id = data.id;
+    this.title = data.title;
+    this.description = data.description;
+    this.seasons = data.seasons;
+    this.image = data.image.trim();
+    this.genreIds = data.genres;
+    this.updated = new Date(data.updated);
+    this.seasonDetails = this.getSeasonDetails(data.id);
+  }
+
+  /**
+   * Get season details for this podcast
+   * @param {string} podcastId - Podcast ID
+   * @returns {Array<Object>} Season details
+   */
+  getSeasonDetails(podcastId) {
+    const seasonData = window.podcastData.seasons.find(s => s.id === podcastId);
+    return seasonData ? seasonData.seasonDetails : [];
+  }
+
+  /**
+   * Get genre objects for this podcast
+   * @returns {Array<Object>} Array of genre objects
+   */
+  getGenres() {
+    return this.genreIds.map(genreId => {
+      return window.podcastData.genres.find(g => g.id === genreId);
+    }).filter(Boolean);
   }
 
   /**
@@ -26,7 +41,7 @@ class Podcast {
    */
   getFormattedLastUpdated() {
     const now = new Date();
-    const diffTime = now - this.lastUpdated;
+    const diffTime = now - this.updated;
     const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
 
     if (diffDays === 0) return "Updated today";
@@ -41,10 +56,13 @@ class Podcast {
    * @returns {string} Formatted date string
    */
   getFormattedDate() {
-    return this.lastUpdated.toLocaleDateString('en-US', {
+    return this.updated.toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'long',
       day: 'numeric'
     });
   }
 }
+
+// Export the class for module usage
+export default Podcast;
