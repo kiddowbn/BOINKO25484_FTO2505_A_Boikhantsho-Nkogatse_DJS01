@@ -1,8 +1,39 @@
 # DJS01: Vanilla JS Podcast App
+DJS01-APP Podcast With html css vanila java script of podcast ap
+HTML:
+DROPDOWN ADDED IN CONTAINER WITH OPPTIONS 
+MODAL SECTION- ADDED WITH MODAL INFO
+
+CSS/STYLES:
+modal design inplimented and responsive interface from mobile to desktop colouring and sizing of componets and page layout 
+
+scripts/js-
+data.js-
+initaldataset given only moved
+
+main.js-
+Main application logic
+Initial render
+Event Listeners
+
+modal.js-
+modal display and interaction
+
+
+podcast.js-
+Get season details for  podcast
+Get genre objects for podcast
+Get format to display
+
+podcastManager.js-
+Manages podcast data, filtering, and sorting
+Initialize podcast data from external data source
+Filter podcasts
+Sort podcasts by criteria
 
 ## Overview
 
-You will design and build a responsive web application that allows users to **browse podcast shows** on a landing page and **view detailed information** in a modal. The application should display clear, concise previews of podcast shows and offer additional information through a modal pop-up, **all without navigating away from the page**. Your app should showcase clean code architecture and strong UI/UX design while following JavaScript best practices.
+ design and build a responsive web application that allows users to **browse podcast shows** on a landing page and **view detailed information** in a modal. The application should display clear, concise previews of podcast shows and offer additional information through a modal pop-up, **all without navigating away from the page**. Your app should showcase clean code architecture and strong UI/UX design while following JavaScript best practices.
 
 ---
 
