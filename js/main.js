@@ -3,16 +3,18 @@
  */
 document.addEventListener('DOMContentLoaded', async () => {
   // Wait for the data to be loaded
+  let attempts = 0;
+  const maxAttempts = 20;
+  
+  // Check if data is loaded or wait for it
+  while (!window.podcastData && attempts < maxAttempts) {
+    await new Promise(resolve => setTimeout(resolve, 50));
+    attempts++;
+  }
+  
   if (!window.podcastData) {
-    await new Promise(resolve => {
-      // Check every 100ms if data is loaded
-      const interval = setInterval(() => {
-        if (window.podcastData) {
-          clearInterval(interval);
-          resolve();
-        }
-      }, 100);
-    });
+    console.error('Failed to load podcast data after multiple attempts');
+    return;
   }
 
   const podcastManager = new PodcastManager();
@@ -28,6 +30,11 @@ document.addEventListener('DOMContentLoaded', async () => {
    */
   function renderPodcasts(podcasts) {
     podcastGrid.innerHTML = '';
+    if (podcasts.length === 0) {
+      podcastGrid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; padding: 2rem;">No podcasts found matching your criteria.</p>';
+      return;
+    }
+    
     podcasts.forEach(podcast => {
       const card = document.createElement('div');
       card.className = 'podcast-card';
